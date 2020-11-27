@@ -23,22 +23,15 @@ class Form(QtWidgets.QDialog):
         self.filePath.setText("/Users/kimji/study/log4jViewer/sample/sample.log")
         self.btnReadFile.clicked.connect(self.file_read)
         self.logTable.setColumnCount(7)
-        #self.logTable.setRowCount(20)
         self.logTable.setHorizontalHeaderLabels(["Date", "Time", "Priority", "Transaction", "Thread", "Category", "Log"])
 
         self.transactionList.clicked.connect(self.searchByTransaction)
 
     def file_read(self):
         fileName = self.filePath.text()
-        # fileName = "/Users/kimji/study/log4jViewer/sample/server.2020-11-20.8.log"
         front_line = ''
-        back_line = ''
-        current_line = ''
-
         outLine = []
         nullIndex = 3
-        index = 0
-
         slicePos = 0
 
         with open(fileName) as file:
@@ -54,8 +47,6 @@ class Form(QtWidgets.QDialog):
                 if split_line[0] != '' and self.checkDateType(split_line[0]):
 
                     if outLine != [] :
-                        print('==> ', outLine)
-                        print('')
                         self.setLogData(outLine)
 
                     outLine = []
@@ -93,8 +84,8 @@ class Form(QtWidgets.QDialog):
                         slicePos += len(split_line[nullIndex + 2])
 
                         slicePos += 6
-
                     outLine.insert(6, current_line[slicePos: len(current_line)])
+                    slicePos = 0
                 else:
                     outLine[6] = outLine[6] + line
         self.setLogData(outLine)
